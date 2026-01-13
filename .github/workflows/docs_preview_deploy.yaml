@@ -79,10 +79,13 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           pnpm install
+          set +e
           OUTPUT=$(pnpm exec opennextjs-cloudflare upload -- --env dev 2>&1)
+          EXIT_CODE=$?
           echo "$OUTPUT"
           PREVIEW_URL=$(echo "$OUTPUT" | grep "Version Preview URL:" | awk '{print $NF}')
           echo "preview-url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+          exit $EXIT_CODE
 
       # Create/update comment with link to preview
       - uses: actions/create-github-app-token@v2

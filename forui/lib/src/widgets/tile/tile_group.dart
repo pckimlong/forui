@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 
 import 'package:forui/forui.dart';
+import 'package:forui/src/widgets/tile/tile.dart';
 
 part 'tile_group.design.dart';
 
@@ -163,7 +164,7 @@ class FTileGroup extends StatelessWidget with FTileGroupMixin {
          children: [
            for (final (index, child) in children.indexed)
              FInheritedItemData.merge(
-               style: style.tileStyle,
+               styles: style.tileStyles.toItemStyles(),
                enabled: enabled,
                dividerColor: style.dividerColor,
                dividerWidth: style.dividerWidth,
@@ -215,7 +216,7 @@ class FTileGroup extends StatelessWidget with FTileGroupMixin {
          itemBuilder: (context, index) {
            if (tileBuilder(context, index) case final tile?) {
              return FInheritedItemData.merge(
-               style: style.tileStyle,
+               styles: style.tileStyles.toItemStyles(),
                enabled: enabled,
                dividerColor: style.dividerColor,
                dividerWidth: style.dividerWidth,
@@ -255,7 +256,7 @@ class FTileGroup extends StatelessWidget with FTileGroupMixin {
          slivers: [
            for (final (index, child) in children.indexed)
              FInheritedItemData.merge(
-               style: style.tileStyle,
+               styles: style.tileStyles.toItemStyles(),
                enabled: enabled,
                dividerColor: style.dividerColor,
                dividerWidth: style.dividerWidth,
@@ -362,10 +363,6 @@ class FTileGroupStyle extends FLabelStyle with _$FTileGroupStyleFunctions {
   @override
   final BoxDecoration decoration;
 
-  /// The tile's style.
-  @override
-  final FTileStyle tileStyle;
-
   /// The divider's style.
   @override
   final FVariants<FItemGroupVariantConstraint, Color, Delta> dividerColor;
@@ -374,12 +371,16 @@ class FTileGroupStyle extends FLabelStyle with _$FTileGroupStyleFunctions {
   @override
   final double dividerWidth;
 
+  /// The tile's styles.
+  @override
+  final FVariants<FItemVariantConstraint, FTileStyle, FTileStyleDelta> tileStyles;
+
   /// Creates a [FTileGroupStyle].
   FTileGroupStyle({
     required this.decoration,
-    required this.tileStyle,
     required this.dividerColor,
     required this.dividerWidth,
+    required this.tileStyles,
     required super.labelTextStyle,
     required super.descriptionTextStyle,
     required super.errorTextStyle,
@@ -390,32 +391,51 @@ class FTileGroupStyle extends FLabelStyle with _$FTileGroupStyleFunctions {
   });
 
   /// Creates a [FTileGroupStyle] that inherits from the given arguments.
-  factory FTileGroupStyle.inherit({required FColors colors, required FTypography typography, required FStyle style}) {
-    final tileStyle = FTileStyle.inherit(colors: colors, typography: typography, style: style);
-    return .new(
-      decoration: BoxDecoration(
-        border: .all(color: colors.border, width: style.borderWidth),
-        borderRadius: style.borderRadius,
-      ),
-
-      tileStyle: tileStyle.copyWith(decoration: .apply([.onAll(const .delta(border: null, borderRadius: null))])),
-      dividerColor: .all(colors.border),
-      dividerWidth: style.borderWidth,
-      labelTextStyle: .delta(
-        typography.base.copyWith(
-          color: style.formFieldStyle.labelTextStyle.base.color ?? colors.primary,
-          fontWeight: .w600,
+  factory FTileGroupStyle.inherit({required FColors colors, required FTypography typography, required FStyle style}) =>
+      .new(
+        decoration: BoxDecoration(
+          border: .all(color: colors.border, width: style.borderWidth),
+          borderRadius: style.borderRadius,
         ),
-        variants: {
-          [.disabled]: .delta(color: colors.disable(colors.primary)),
-        },
-      ),
-      descriptionTextStyle: style.formFieldStyle.descriptionTextStyle.apply([
-        .onAll(.delta(fontSize: typography.xs.fontSize, height: typography.xs.height)),
-      ]),
-      errorTextStyle: style.formFieldStyle.errorTextStyle.apply([
-        .onAll(.delta(fontSize: typography.xs.fontSize, height: typography.xs.height, fontWeight: .w400)),
-      ]),
-    );
-  }
+        dividerColor: .all(colors.border),
+        dividerWidth: style.borderWidth,
+        labelTextStyle: .delta(
+          typography.base.copyWith(
+            color: style.formFieldStyle.labelTextStyle.base.color ?? colors.primary,
+            fontWeight: .w600,
+          ),
+          variants: {
+            [.disabled]: .delta(color: colors.disable(colors.primary)),
+          },
+        ),
+        tileStyles: .delta(
+          FTileStyle.inherit(
+            colors: colors,
+            typography: typography,
+            style: style,
+          ).copyWith(decoration: .apply([.onAll(const .delta(border: null, borderRadius: null))])),
+          variants: {
+            [.destructive]: .delta(
+              contentStyle: FItemContentStyle.inherit(
+                typography: typography,
+                foreground: colors.destructive,
+                mutedForeground: colors.destructive,
+                disabledForeground: colors.disable(colors.destructive),
+                disabledMutedForeground: colors.disable(colors.destructive),
+              ),
+              rawItemContentStyle: FRawItemContentStyle.inherit(
+                typography: typography,
+                enabled: colors.destructive,
+                disabled: colors.disable(colors.destructive),
+              ),
+            ),
+          },
+        ),
+        descriptionTextStyle: style.formFieldStyle.descriptionTextStyle.apply([
+          .onAll(.delta(fontSize: typography.xs.fontSize, height: typography.xs.height)),
+        ]),
+        errorTextStyle: style.formFieldStyle.errorTextStyle.apply([
+          .onAll(.delta(fontSize: typography.xs.fontSize, height: typography.xs.height, fontWeight: .w400)),
+        ]),
+      );
 }

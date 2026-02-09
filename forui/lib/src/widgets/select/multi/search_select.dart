@@ -70,13 +70,19 @@ class _SearchSelect<T> extends FMultiSelect<T> {
 
 class _SearchSelectState<T> extends _FMultiSelectState<_SearchSelect<T>, T> {
   @override
-  Widget content(BuildContext context, FMultiSelectStyle style) => SearchContent<T>(
+  Widget content(
+    BuildContext context,
+    FMultiSelectStyle style, {
+    required bool autofocusFirst,
+    required bool Function(T) autofocus,
+  }) => SearchContent<T>(
     scrollController: widget.contentScrollController,
     searchStyle: style.searchStyle,
     contentStyle: style.contentStyle,
     properties: widget.searchFieldProperties,
     scrollHandles: widget.contentScrollHandles,
-    first: _controller.value.isEmpty,
+    autofocusFirst: autofocusFirst,
+    autofocus: autofocus,
     enabled: widget.enabled,
     physics: widget.contentPhysics,
     divider: widget.contentDivider,

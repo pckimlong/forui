@@ -86,6 +86,55 @@ void main() {
       await expectLater(find.byType(TestScaffold), matchesGoldenFile('select/${theme.name}/search_content/sync.png'));
     });
 
+    testWidgets('desktop', (tester) async {
+      await tester.pumpWidget(
+        TestScaffold.app(
+          theme: theme.data,
+          platform: .macOS,
+          alignment: .topCenter,
+          child: FSelect<String>.searchBuilder(
+            key: key,
+            format: (s) => s,
+            filter: (_) => [],
+            contentBuilder: (_, _, _) => [.item(title: const Text('A'), value: 'A')],
+          ),
+        ),
+      );
+
+      await tester.tap(find.byKey(key));
+      await tester.pumpAndSettle();
+
+      await expectLater(
+        find.byType(TestScaffold),
+        matchesGoldenFile('select/${theme.name}/search_content/desktop.png'),
+      );
+    });
+
+    testWidgets('desktop with selected item', (tester) async {
+      await tester.pumpWidget(
+        TestScaffold.app(
+          theme: theme.data,
+          platform: .macOS,
+          alignment: .topCenter,
+          child: FSelect<String>.searchBuilder(
+            key: key,
+            control: const .managed(initial: '99'),
+            format: (s) => s,
+            filter: (_) => [],
+            contentBuilder: (_, _, _) => [for (var i = 0; i < 100; i++) .item(title: Text('Item $i'), value: '$i')],
+          ),
+        ),
+      );
+
+      await tester.tap(find.byKey(key));
+      await tester.pumpAndSettle();
+
+      await expectLater(
+        find.byType(TestScaffold),
+        matchesGoldenFile('select/${theme.name}/search_content/desktop_selected.png'),
+      );
+    });
+
     testWidgets('async', (tester) async {
       await tester.pumpWidget(
         TestScaffold.app(

@@ -447,8 +447,9 @@ class _InputState extends State<Input> {
       hintStyle: WidgetStateTextStyle.resolveWith(
         (variants) => style.hintTextStyle.resolve(toTextFieldVariants(platform, variants)),
       ),
-      fillColor: style.fillColor,
-      filled: style.filled,
+      fillColor: style.color.resolve(variants),
+      hoverColor: style.color.resolve(variants),
+      filled: style.color.base != null || style.color.variants.isNotEmpty,
       border: WidgetStateInputBorder.resolveWith(
         (variants) => style.border.resolve(toTextFieldVariants(platform, variants)),
       ),

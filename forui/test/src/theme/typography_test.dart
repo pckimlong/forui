@@ -66,6 +66,7 @@ void main() {
         destructiveForeground: Colors.blueGrey,
         error: Colors.red,
         errorForeground: Colors.redAccent,
+        card: Colors.cyan,
         border: Colors.lightBlue,
       );
 

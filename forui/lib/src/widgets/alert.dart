@@ -137,11 +137,11 @@ extension type FAlertStyles._(FVariants<FAlertVariantConstraint, FAlertStyle, FA
           FAlertStyle(
             iconStyle: IconThemeData(color: colors.foreground, size: 20),
             titleTextStyle: typography.base.copyWith(fontWeight: .w500, color: colors.foreground, height: 1.2),
-            subtitleTextStyle: typography.sm.copyWith(color: colors.foreground),
+            subtitleTextStyle: typography.sm.copyWith(color: colors.mutedForeground),
             decoration: BoxDecoration(
               border: .all(color: colors.border),
               borderRadius: style.borderRadius,
-              color: colors.background,
+              color: colors.card,
             ),
           ),
           variants: {

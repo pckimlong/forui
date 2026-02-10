@@ -918,42 +918,53 @@ class FMultiSelectFieldStyle extends FLabelStyle with Diagnosticable, _$FMultiSe
       style: style,
     ).resolve({FButtonVariant.ghost}).resolve({FButtonSizeVariant.sm});
 
+    final iconStyle = FVariants<FTextFieldVariantConstraint, IconThemeData, IconThemeDataDelta>.delta(
+      IconThemeData(color: colors.mutedForeground, size: 16),
+      variants: {
+        [.disabled]: .delta(color: colors.disable(colors.mutedForeground)),
+      },
+    );
+
     return .new(
       decoration: FVariants(
         BoxDecoration(
           border: .all(color: colors.border, width: style.borderWidth),
           borderRadius: style.borderRadius,
+          color: colors.card,
         ),
         variants: {
-          [.error]: BoxDecoration(
-            border: .all(color: colors.error, width: style.borderWidth),
-            borderRadius: style.borderRadius,
-          ),
-          [.disabled]: BoxDecoration(
-            border: .all(color: colors.disable(colors.border), width: style.borderWidth),
-            borderRadius: style.borderRadius,
-          ),
           [.focused]: BoxDecoration(
             border: .all(color: colors.primary, width: style.borderWidth),
             borderRadius: style.borderRadius,
+            color: colors.card,
+          ),
+          //
+          [.disabled]: BoxDecoration(
+            border: .all(color: colors.disable(colors.border), width: style.borderWidth),
+            borderRadius: style.borderRadius,
+            color: colors.card,
+          ),
+          //
+          [.error]: BoxDecoration(
+            border: .all(color: colors.error, width: style.borderWidth),
+            borderRadius: style.borderRadius,
+            color: colors.card,
+          ),
+          [.error.and(.disabled)]: BoxDecoration(
+            border: .all(color: colors.disable(colors.error), width: style.borderWidth),
+            borderRadius: style.borderRadius,
+            color: colors.disable(colors.card),
           ),
         },
       ),
       hintTextStyle: .delta(
         typography.sm.copyWith(color: colors.mutedForeground),
         variants: {
-          [.disabled]: .delta(color: colors.disable(colors.border)),
-        },
-      ),
-      iconStyle: .delta(
-        IconThemeData(color: colors.mutedForeground, size: 16),
-        variants: {
           [.disabled]: .delta(color: colors.disable(colors.mutedForeground)),
         },
       ),
-      clearButtonStyle: ghost.copyWith(
-        iconContentStyle: .delta(iconStyle: .apply([.onAll(.delta(color: colors.mutedForeground))])),
-      ),
+      iconStyle: iconStyle,
+      clearButtonStyle: ghost.copyWith(iconContentStyle: .delta(iconStyle: .value(iconStyle.cast()))),
       tappableStyle: style.tappableStyle.copyWith(motion: FTappableMotion.none),
       labelTextStyle: style.formFieldStyle.labelTextStyle,
       descriptionTextStyle: style.formFieldStyle.descriptionTextStyle,

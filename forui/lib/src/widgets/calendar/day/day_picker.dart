@@ -229,53 +229,53 @@ class FCalendarDayPickerStyle with Diagnosticable, _$FCalendarDayPickerStyleFunc
 
   /// Creates a [FCalendarDayPickerStyle] that inherits its properties.
   factory FCalendarDayPickerStyle.inherit({required FColors colors, required FTypography typography}) {
-    final mutedTextStyle = typography.base.copyWith(color: colors.disable(colors.mutedForeground), fontWeight: .w500);
-
-    final background = <List<FTappableVariantConstraint>, Color>{
-      [.disabled.and(.selected)]: colors.primaryForeground,
-      [.disabled]: colors.background,
-      [.hovered, .pressed]: colors.secondary,
-    };
-
+    final backgroundColor = FVariants<FTappableVariantConstraint, Color, Delta>(
+      colors.card,
+      variants: {
+        [.hovered, .pressed]: colors.secondary,
+        //
+        [.selected]: colors.primary,
+        [.selected.and(.disabled)]: colors.disable(colors.primary),
+      },
+    );
     final border = FVariants<FTappableVariantConstraint, Color?, Delta>(
       null,
       variants: {
-        [.disabled.and(.selected).and(.focused)]: colors.primaryForeground,
-        [.disabled.and(.focused)]: colors.background,
-        [.focused]: colors.foreground,
+        [.focused]: colors.primary,
+        //
+        [.disabled.and(.selected).and(.focused)]: null,
+        [.disabled.and(.focused)]: null,
       },
     );
 
     return .new(
       headerTextStyle: typography.xs.copyWith(color: colors.mutedForeground),
       current: FCalendarEntryStyle(
-        backgroundColor: FVariants(
-          colors.background,
-          variants: {
-            ...background,
-            [.selected]: colors.foreground,
-          },
-        ),
+        backgroundColor: backgroundColor,
         borderColor: border,
         textStyle: .delta(
           typography.base.copyWith(color: colors.foreground, fontWeight: .w500),
           variants: {
-            [.disabled]: .delta(color: colors.disable(colors.mutedForeground)),
-            [.selected]: .delta(color: colors.background),
+            [.disabled]: .delta(color: colors.disable(colors.foreground)),
+            //
+            [.selected]: .delta(color: colors.primaryForeground),
+            [.selected.and(.disabled)]: .delta(color: colors.disable(colors.primaryForeground)),
           },
         ),
         radius: const .circular(4),
       ),
       enclosing: FCalendarEntryStyle(
-        backgroundColor: FVariants(
-          colors.background,
+        backgroundColor: backgroundColor,
+        borderColor: border,
+        textStyle: .delta(
+          typography.base.copyWith(color: colors.mutedForeground, fontWeight: .w500),
           variants: {
-            ...background,
-            [.selected]: colors.primaryForeground,
+            [.disabled]: .delta(color: colors.disable(colors.mutedForeground)),
+            //
+            [.selected]: .delta(color: colors.primaryForeground),
+            [.selected.and(.disabled)]: .delta(color: colors.disable(colors.primaryForeground)),
           },
         ),
-        borderColor: border,
-        textStyle: .all(mutedTextStyle),
         radius: const .circular(4),
       ),
     );

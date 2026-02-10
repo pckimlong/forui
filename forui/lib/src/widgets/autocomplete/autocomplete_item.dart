@@ -243,22 +243,22 @@ class FAutocompleteSectionStyle with Diagnosticable, _$FAutocompleteSectionStyle
   }) {
     const padding = EdgeInsetsDirectional.only(start: 11, top: 7.5, bottom: 7.5, end: 6);
     final iconStyle = FVariants<FTappableVariantConstraint, IconThemeData, IconThemeDataDelta>.delta(
-      IconThemeData(color: colors.primary, size: 15),
+      IconThemeData(color: colors.foreground, size: 15),
       variants: {
-        [.disabled]: .delta(color: colors.disable(colors.primary)),
+        [.disabled]: .delta(color: colors.disable(colors.foreground)),
       },
     );
     final textStyle = FVariants<FTappableVariantConstraint, TextStyle, TextStyleDelta>.delta(
       typography.sm,
       variants: {
-        [.disabled]: .delta(color: colors.disable(colors.primary)),
+        [.disabled]: .delta(color: colors.disable(colors.foreground)),
       },
     );
     return .new(
       labelTextStyle: .delta(
-        typography.sm.copyWith(color: colors.primary, fontWeight: .w600),
+        typography.sm.copyWith(color: colors.foreground, fontWeight: .w600),
         variants: {
-          [.disabled]: .delta(color: colors.disable(colors.primary)),
+          [.disabled]: .delta(color: colors.disable(colors.foreground)),
         },
       ),
       dividerColor: .all(colors.border),
@@ -268,17 +268,17 @@ class FAutocompleteSectionStyle with Diagnosticable, _$FAutocompleteSectionStyle
         decoration: FVariants(
           const BoxDecoration(),
           variants: {
-            [.disabled]: const BoxDecoration(),
             [.focused, .hovered, .pressed]: BoxDecoration(color: colors.secondary, borderRadius: style.borderRadius),
+            [.disabled]: const BoxDecoration(),
           },
         ),
         contentStyle:
             .inherit(
+              colors: colors,
               typography: typography,
-              foreground: colors.primary,
-              disabledForeground: colors.disable(colors.primary),
+              prefix: colors.foreground,
+              foreground: colors.foreground,
               mutedForeground: colors.mutedForeground,
-              disabledMutedForeground: colors.disable(colors.mutedForeground),
             ).copyWith(
               padding: padding,
               prefixIconStyle: .value(iconStyle),

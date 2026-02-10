@@ -118,6 +118,11 @@ final class FColors with Diagnosticable {
   /// Typically used to color widgets against a [error] colored background.
   final Color errorForeground;
 
+  /// The card color.
+  ///
+  /// Typically used as a background for card widgets.
+  final Color card;
+
   /// The border color.
   final Color border;
 
@@ -137,7 +142,9 @@ final class FColors with Diagnosticable {
   /// `0.0 <= hoverDarken <= 1.0`
   final double hoverDarken;
 
-  /// The opacity of the foreground color when a widget is disabled. Defaults to 0.5.
+  /// The factor by which to multiply a color's opacity when a widget is disabled. Defaults to 0.5.
+  ///
+  /// For example, a fully opaque color will become 50% transparent, and a color at 80% opacity will become 40%.
   ///
   /// ## Contract
   /// Throws [AssertionError] if the value is less than 0 or greater than 1.
@@ -163,6 +170,7 @@ final class FColors with Diagnosticable {
     required this.destructiveForeground,
     required this.error,
     required this.errorForeground,
+    required this.card,
     required this.border,
     this.hoverLighten = 0.075,
     this.hoverDarken = 0.05,
@@ -188,6 +196,7 @@ final class FColors with Diagnosticable {
     destructiveForeground: FColors.lerpColor(a.destructiveForeground, b.destructiveForeground, t)!,
     error: FColors.lerpColor(a.error, b.error, t)!,
     errorForeground: FColors.lerpColor(a.errorForeground, b.errorForeground, t)!,
+    card: FColors.lerpColor(a.card, b.card, t)!,
     border: FColors.lerpColor(a.border, b.border, t)!,
     hoverLighten: lerpDouble(a.hoverLighten, b.hoverLighten, t)!,
     hoverDarken: lerpDouble(a.hoverDarken, b.hoverDarken, t)!,
@@ -221,20 +230,8 @@ final class FColors with Diagnosticable {
     return hovered;
   }
 
-  /// Returns a disabled color for the [foreground] on the [background].
-  ///
-  /// Both colors are converted to Display P3 if they do not share the same color space.
-  ///
-  /// [FColors.background] is used if [background] is not given.
-  Color disable(Color foreground, [Color? background]) {
-    background ??= this.background;
-    if (foreground.colorSpace != background.colorSpace) {
-      foreground = foreground.withValues(colorSpace: .displayP3);
-      background = background.withValues(colorSpace: .displayP3);
-    }
-
-    return .alphaBlend(foreground.withValues(alpha: disabledOpacity), background);
-  }
+  /// Returns a disabled variant of the [color] by multiplying its opacity by [disabledOpacity].
+  Color disable(Color color) => color.withValues(alpha: color.a * disabledOpacity);
 
   /// Returns a copy of this [FColors] with the given properties replaced.
   ///
@@ -267,6 +264,7 @@ final class FColors with Diagnosticable {
     Color? destructiveForeground,
     Color? error,
     Color? errorForeground,
+    Color? card,
     Color? border,
     double? hoverLighten,
     double? hoverDarken,
@@ -287,6 +285,7 @@ final class FColors with Diagnosticable {
     destructiveForeground: destructiveForeground ?? this.destructiveForeground,
     error: error ?? this.error,
     errorForeground: errorForeground ?? this.errorForeground,
+    card: card ?? this.card,
     border: border ?? this.border,
     hoverLighten: hoverLighten ?? this.hoverLighten,
     hoverDarken: hoverDarken ?? this.hoverDarken,
@@ -312,6 +311,7 @@ final class FColors with Diagnosticable {
       ..add(ColorProperty('destructiveForeground', destructiveForeground))
       ..add(ColorProperty('error', error))
       ..add(ColorProperty('errorForeground', errorForeground))
+      ..add(ColorProperty('card', card))
       ..add(ColorProperty('border', border))
       ..add(PercentProperty('hoverLighten', hoverLighten))
       ..add(PercentProperty('hoverDarken', hoverDarken))
@@ -337,6 +337,7 @@ final class FColors with Diagnosticable {
           destructiveForeground == other.destructiveForeground &&
           error == other.error &&
           errorForeground == other.errorForeground &&
+          card == other.card &&
           border == other.border &&
           hoverLighten == other.hoverLighten &&
           hoverDarken == other.hoverDarken &&
@@ -359,6 +360,7 @@ final class FColors with Diagnosticable {
       destructiveForeground.hashCode ^
       error.hashCode ^
       errorForeground.hashCode ^
+      card.hashCode ^
       border.hashCode ^
       hoverLighten.hashCode ^
       hoverDarken.hashCode ^

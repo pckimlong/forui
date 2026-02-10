@@ -262,29 +262,31 @@ class FCalendarStyle with Diagnosticable, _$FCalendarStyleFunctions {
   });
 
   /// Creates a [FCalendarStyle] that inherits its properties.
-  FCalendarStyle.inherit({required FColors colors, required FTypography typography, required FStyle style})
-    : this(
+  factory FCalendarStyle.inherit({required FColors colors, required FTypography typography, required FStyle style}) =>
+      FCalendarStyle(
         headerStyle: .inherit(colors: colors, typography: typography, style: style),
         dayPickerStyle: .inherit(colors: colors, typography: typography),
         yearMonthPickerStyle: FCalendarEntryStyle(
           backgroundColor: FVariants(
-            colors.background,
+            colors.card,
             variants: {
-              [.disabled]: colors.background,
               [.hovered, .pressed]: colors.secondary,
+              //
+              [.disabled]: colors.card,
             },
           ),
           borderColor: FVariants(
             null,
             variants: {
-              [.disabled]: colors.background,
               [.focused]: colors.foreground,
+              //
+              [.disabled]: null,
             },
           ),
           textStyle: .delta(
             typography.base.copyWith(color: colors.foreground, fontWeight: .w500),
             variants: {
-              [.disabled]: .delta(color: colors.disable(colors.mutedForeground)),
+              [.disabled]: .delta(color: colors.disable(colors.foreground)),
             },
           ),
           radius: const .circular(8),
@@ -292,7 +294,7 @@ class FCalendarStyle with Diagnosticable, _$FCalendarStyleFunctions {
         decoration: BoxDecoration(
           borderRadius: style.borderRadius,
           border: .all(color: colors.border),
-          color: colors.background,
+          color: colors.card,
         ),
       );
 }

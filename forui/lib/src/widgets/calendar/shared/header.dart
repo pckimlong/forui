@@ -52,7 +52,7 @@ class _HeaderState extends State<Header> with SingleTickerProviderStateMixin {
   }
 
   @override
-  Widget build(BuildContext context) => FTappable(
+  Widget build(BuildContext context) => FTappable.static(
     focusedOutlineStyle: widget.style.focusedOutlineStyle,
     onPress: () => widget.type.value = switch (widget.type.value) {
       .day => .yearMonth,
@@ -193,11 +193,35 @@ class FCalendarHeaderStyle with Diagnosticable, _$FCalendarHeaderStyleFunctions 
     required FStyle style,
   }) => .new(
     focusedOutlineStyle: style.focusedOutlineStyle,
-    buttonStyle: FButtonStyles.inherit(
-      colors: colors,
-      typography: typography,
-      style: style,
-    ).resolve({FButtonVariant.outline}).resolve({FButtonSizeVariant.sm}),
-    headerTextStyle: typography.base.copyWith(color: colors.primary, fontWeight: .w600),
+    buttonStyle: FButtonStyles.inherit(colors: colors, typography: typography, style: style)
+        .resolve({FButtonVariant.outline})
+        .resolve({FButtonSizeVariant.sm})
+        .copyWith(
+          iconContentStyle: .delta(
+            iconStyle: .value(
+              .delta(
+                IconThemeData(color: colors.foreground, size: 16),
+                variants: {
+                  [.disabled]: .delta(color: colors.disable(colors.foreground)),
+                },
+              ),
+            ),
+          ),
+          decoration: .value(
+            .delta(
+              BoxDecoration(
+                border: .all(color: colors.border),
+                borderRadius: style.borderRadius,
+                color: colors.card,
+              ),
+              variants: {
+                [.hovered, .pressed]: .delta(color: colors.secondary),
+                //
+                [.disabled]: .delta(border: .all(color: colors.disable(colors.border))),
+              },
+            ),
+          ),
+        ),
+    headerTextStyle: typography.base.copyWith(color: colors.foreground, fontWeight: .w600),
   );
 }

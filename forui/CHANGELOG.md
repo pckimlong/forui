@@ -1,6 +1,6 @@
 ## 0.18.0
 
-This update overhauls the Styling API as outlined in [Styling 2.0](https://github.com/duobaseio/forui/blob/main/design_docs/shipped/styling_2.0.md).
+This update overhauls the Styling API as outlined in [Styling 2.0](https://github.com/duobaseio/forui/blob/main/design_docs/shipped/styling_2.0.md). It also adjusts the default styling and colors.
 
 ### Key Styling 2.0 Improvements
 
@@ -95,12 +95,12 @@ Automated fixes via [Data Driven Fixes](https://github.com/flutter/flutter/blob/
 are not available for most of these changes due to the tool's limitations.
 
 
-### `FAccordionItem`
+### `FAccordion`
 * **Breaking** Rename `FAccordionItem.onStateChange` to `FAccordionItem.onVariantChange`.
 
 
 ### `FAlert`
-* Change destructive variant to match latest shadcn/ui.
+* Change variants to match latest shadcn/ui.
 
 
 ### `FBadge`
@@ -122,12 +122,20 @@ are not available for most of these changes due to the tool's limitations.
 
 * Change destructive variant to match latest shadcn/ui.
 * Change base `FButtonStyle` values to scale more appropriately with different sizes.
-* Change `FButtonVariant.outline` background color from transparent to `background`.
+* Change `FButtonVariant.outline` default background color from transparent to `background`.
 * **Breaking** Remove `FButtonStyle.inherit`. Use `FButtonSizeStyles.inherit` instead.
 * **Breaking** Remove `FButtonContentStyle.inherit`. Construct `FButtonContentStyle` directly instead.
 * **Breaking** Remove `FButtonIconContentStyle.inherit`. Construct `FButtonIconContentStyle` directly instead.
 * **Breaking** Rename `FButton.onStateChange` to `FButton.onVariantChange`.
 * **Breaking** Rename `FButtonData.states` to `FButtonData.variants`.
+
+
+### `FCalendar`
+* Change default background color to `card`.
+
+
+### `FCard`
+* Change default background color to `card`.
 
 
 ### `FCircularProgress`
@@ -137,7 +145,6 @@ are not available for most of these changes due to the tool's limitations.
 
 ### `FDateField`
 * **Breaking** Rename `FDateFieldStyle.selectFieldStyle` to `FDateFieldStyle.fieldStyle`.
-
 * **Breaking** Remove `FDateFieldStyle.iconStyle`. Use nested `FDateFieldStyle.fieldStyle.iconStyle` instead.
 
 
@@ -160,7 +167,6 @@ are not available for most of these changes due to the tool's limitations.
 
 ### `FLabel`
 * Add transition between different states.
-
 * Add `FLabelMotion`.
 
 
@@ -176,15 +182,12 @@ are not available for most of these changes due to the tool's limitations.
 * **Breaking** Rename `FItem.onStateChange` to `FItem.onVariantChange`.
 
 
-### `FMultiSelectTag`
-* **Breaking** Rename `FMultiSelectTag.onStateChange` to `FMultiSelectTag.onVariantChange`.
-
-
 ### `FPicker`
 * Change error message when given unbounded constraints to be more descriptive.
 
 
 ### `FPopover`
+* Change default background color to `card`.
 * Change `FPopoverController(motion: ...)` from `FPopoverMotion` to `FPopoverMotionDelta`.
 
 
@@ -199,8 +202,9 @@ are not available for most of these changes due to the tool's limitations.
 
 
 ### `FSelect` & `FMultiSelect`
-* **Breaking** Add `enabled` parameter to `FMultiSelectTagBuilder` at position 1 (after `context`).
+* **Breaking** Add `enabled` parameter to `FMultiSelectTagBuilder`.
 
+* Change default background color to `card`.
 * **Breaking** Change `FMultiSelectFieldStyle.iconStyle` type from `IconThemeData` to `FWidgetStateMap<IconThemeData>`.
   Wrap existing values with `.all(...)`, e.g. `.all(IconThemeData(...))`.
 * **Breaking** Change `FSelectSearchFieldProperties.autofocus` to default to true on desktop and false on touch devices.
@@ -208,7 +212,8 @@ are not available for most of these changes due to the tool's limitations.
 * **Breaking** Rename `FSelectSearchStyle.textFieldStyle` to `FSelectSearchStyle.fieldStyle`.
 * **Breaking** Remove `FSelectStyle.iconStyle`. Use `FSelectStyle.fieldStyle.iconStyle` instead.
 * **Breaking** Remove `FSelectSearchStyle.iconStyle`. Use `FSelectSearchStyle.fieldStyle.iconStyle` instead.
-* Restore `FSelect.contentScrollHandle`.
+* **Breaking** Rename `FMultiSelectTag.onStateChange` to `FMultiSelectTag.onVariantChange`.
+* Unmark `FSelect.contentScrollHandle` as deprecated.
 
 * Fix search field not receiving focus when popover opens even with `FSelectSearchFieldProperties.autofocus` set to `true`.
 * Fix `FMultiSelect` still allowing tags to be removed when disabled.
@@ -224,11 +229,8 @@ are not available for most of these changes due to the tool's limitations.
 * **Breaking** Rename `FSelectTile.onStatesChange` to `FSelectTile.onVariantChange`.
 
 
-### `FSidebarGroup`
+### `FSidebar`
 * **Breaking** Rename `FSidebarGroup.onActionStateChange` to `FSidebarGroup.onActionVariantChange`.
-
-
-### `FSidebarItem`
 * **Breaking** Rename `FSidebarItem.onStateChange` to `FSidebarItem.onVariantChange`.
 
 
@@ -256,48 +258,51 @@ are not available for most of these changes due to the tool's limitations.
 * Add destructive `FItem` variant.
 * Add `FTileStyles`.
 
+* Change default background color to `card`.
 * **Breaking** Rename `FTile.onStateChange` to `FTile.onVariantChange`.
 * **Breaking** Change `FTileGroupStyle.tileStyle` to `FTileGroupStyle.tileStyles` (`FTileStyles` instead of `FTileStyle`).
 
 
 ### `FTextField` & `FTextFormField`
-* **Breaking** Add `FTextFieldStyle.iconStyle`.
-* **Breaking** Remove `FTextField.statesController`.
-* **Breaking** Remove `FTextFormField.statesController`.
+* Add `FTextFieldStyle.iconStyle`.
+
+* Change default cursor color from blue to `primary`.
+* Change default background color to `card`.
+* Change `FTextFieldStyle.clearButtonStyle` to not bounce by default.
+* Change `FTextFieldStyle.obscureButtonStyle` to not bounce by default.
+* **Breaking** Change `FTextFieldStyle.fillColor` to color.
 * **Breaking** Change `FFieldBuilder` to use `Set<FTextFieldVariant>` instead of `Set<WidgetState>`.
 * **Breaking** Change `FFieldIconBuilder` to use `Set<FTextFieldVariant>` instead of `Set<WidgetState>`.
 * **Breaking** Change `FPasswordFieldIconBuilder` to use `Set<FTextFieldVariant>` instead of `Set<WidgetState>`.
-
-* Change `FTextFieldStyle.clearButtonStyle` to not bounce by default.
-* Change `FTextFieldStyle.obscureButtonStyle` to not bounce by default.
+* **Breaking** Remove `FTextField.statesController`.
+* **Breaking** Remove `FTextFormField.statesController`.
+* **Breaking** Remove `FTextFieldStyle.filled`.
 
 
 ### `FTheme` & `FThemes`
+* Add `FThemes.neutral`.
 * Add `FTheme.textDirection`.
 * Add `FTheme.tooltipGroupActiveDuration`.
 * Add `FBasicTheme.tooltipGroupActiveDuration`.
-* Add `FThemes.neutral`.
+* Add `FThemeData.itemStyles`.
+* Add `FThemeData.tileStyles`.
+* Add `FColors.card`.
 * Add `FColors.lerpColor(...)`.
 
 * **Breaking** Change `FThemes` colors to match latest shadcn/ui.
 * **Breaking** Rename `FTheme` to `FBasicTheme`.
 * **Breaking** Rename `FAnimatedTheme` to `FTheme`.
 * **Breaking** Rename `FAnimatedThemeMotion` to `FThemeMotion`.
-
-
-### `FThemeData`
-* Add `FThemeData.itemStyles`.
-* Add `FThemeData.tileStyles`.
-
-* **Breaking** Remove `FThemeData.itemStyle`.
-* **Breaking** Remove `FThemeData.tileStyle`.
-
 * **Breaking** Change `FThemeData.copyWith(...)` to accept `Delta`s instead of callbacks.
+* **Breaking** Change `FColors.disabledOpacity` to be a multiplicative factor rather than an absolute opacity value.
+* **Breaking** Change `FColors.disable` to multiply the color's existing opacity by `disabledOpacity` instead of
+  alpha-blending against a background.
 
 
 ### `FTooltip`
 * Add `FTooltipGroup` for grouping tooltips so subsequent ones appear instantly after the first.
 
+* Change default background color to `card`.
 * Change `FTooltip` fields to be nullable and inherit from the enclosing `FTooltipGroup`.
 * Change `FTooltipController(motion: ...)` from `FTooltipMotion` to `FTooltipMotionDelta`.
 
@@ -305,7 +310,6 @@ are not available for most of these changes due to the tool's limitations.
 ### `FTimeField`
 * Change error message when localizations are missing to be more descriptive.
 * **Breaking** Rename `FTimeFieldStyle.selectFieldStyle` to `FTimeFieldStyle.fieldStyle`.
-
 * **Breaking** Remove `FTimeFieldStyle.iconStyle`. Use `FTimeFieldStyle.fieldStyle.iconStyle` instead.
 
 * Fix `FTimeField` incorrectly handling traversal when no localizations are provided.
@@ -315,7 +319,8 @@ are not available for most of these changes due to the tool's limitations.
 * Change error message when given unbounded constraints to be more descriptive.
 
 
-### `FToaster`
+### `FToast`
+* Change default background color to `card`.
 * Change `FToastAlignment` from an enum to final class to allow fine-grained control over positioning.
 
 
@@ -331,6 +336,7 @@ are not available for most of these changes due to the tool's limitations.
 * **Breaking** Remove `FWidgetStatesDelta`.
 * **Breaking** Remove `FValueNotifier` - use `ValueNotifier` instead.
 
+* Fix default styles across various widgets incorrectly using `primary` color.
 * Fix CLI incorrectly parsing `FStyle`.
 
 

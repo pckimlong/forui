@@ -474,16 +474,17 @@ extension type FItemStyles._(FVariants<FItemVariantConstraint, FItemStyle, FItem
           variants: {
             [.destructive]: .delta(
               contentStyle: FItemContentStyle.inherit(
+                colors: colors,
                 typography: typography,
+                prefix: colors.destructive,
                 foreground: colors.destructive,
                 mutedForeground: colors.destructive,
-                disabledForeground: colors.disable(colors.destructive),
-                disabledMutedForeground: colors.disable(colors.destructive),
               ),
               rawItemContentStyle: FRawItemContentStyle.inherit(
+                colors: colors,
                 typography: typography,
-                enabled: colors.primary,
-                disabled: colors.disable(colors.primary),
+                prefix: colors.primary,
+                color: colors.primary,
               ),
             ),
           },
@@ -551,23 +552,26 @@ class FItemStyle with Diagnosticable, _$FItemStyleFunctions {
         decoration: .delta(
           BoxDecoration(color: colors.background, borderRadius: style.borderRadius),
           variants: {
-            [.disabled.and(.selected)]: .delta(color: colors.disable(colors.secondary)),
-            [.disabled]: const .delta(),
-            [.selected]: .delta(color: colors.secondary),
             [.hovered, .pressed]: .delta(color: colors.secondary),
+            //
+            [.disabled]: const .delta(),
+            //
+            [.selected]: .delta(color: colors.secondary),
+            [.selected.and(.disabled)]: .delta(color: colors.disable(colors.secondary)),
           },
         ),
         contentStyle: .inherit(
+          colors: colors,
           typography: typography,
-          foreground: colors.primary,
-          disabledForeground: colors.disable(colors.primary),
+          prefix: colors.primary,
+          foreground: colors.foreground,
           mutedForeground: colors.mutedForeground,
-          disabledMutedForeground: colors.disable(colors.mutedForeground),
         ),
         rawItemContentStyle: .inherit(
+          colors: colors,
           typography: typography,
-          enabled: colors.primary,
-          disabled: colors.disable(colors.primary),
+          prefix: colors.foreground,
+          color: colors.foreground,
         ),
         tappableStyle: style.tappableStyle.copyWith(
           motion: FTappableMotion.none,

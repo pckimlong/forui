@@ -6,7 +6,6 @@ import 'package:meta/meta.dart';
 
 import 'package:forui/forui.dart';
 import 'package:forui/src/foundation/annotations.dart';
-import 'package:forui/src/theme/delta.dart';
 import 'package:forui/src/theme/variant.dart';
 
 @Variants('FTextField', {
@@ -16,7 +15,6 @@ import 'package:forui/src/theme/variant.dart';
   'hovered': (1, 'The interaction variant when the user drags their mouse cursor over the given widget.'),
   'pressed': (1, 'The interaction variant when the user is actively pressing down on the given widget.'),
 })
-@Sentinels(FTextFieldStyle, {'fillColor': 'colorSentinel'})
 part 'text_field_style.design.dart';
 
 /// The text field style.
@@ -27,19 +25,15 @@ class FTextFieldStyle extends FLabelStyle with _$FTextFieldStyleFunctions {
   @override
   final Brightness keyboardAppearance;
 
+  /// The fill color of the text-field.
+  @override
+  final FVariants<FTextFieldVariantConstraint, Color?, Delta> color;
+
   /// The color of the cursor. Defaults to [CupertinoColors.activeBlue].
   ///
   /// The cursor indicates the current location of text insertion point in the field.
   @override
   final Color cursorColor;
-
-  /// The base fill color of the decoration's container colors.
-  @override
-  final Color? fillColor;
-
-  /// If true the decoration's container is filled with [fillColor]. Defaults to false.
-  @override
-  final bool filled;
 
   /// The padding surrounding this text field's content.
   ///
@@ -97,6 +91,7 @@ class FTextFieldStyle extends FLabelStyle with _$FTextFieldStyleFunctions {
   /// Creates a [FTextFieldStyle].
   FTextFieldStyle({
     required this.keyboardAppearance,
+    required this.color,
     required this.iconStyle,
     required this.clearButtonStyle,
     required this.obscureButtonStyle,
@@ -108,8 +103,6 @@ class FTextFieldStyle extends FLabelStyle with _$FTextFieldStyleFunctions {
     required super.descriptionTextStyle,
     required super.errorTextStyle,
     this.cursorColor = CupertinoColors.activeBlue,
-    this.fillColor,
-    this.filled = false,
     this.contentPadding = const .symmetric(horizontal: 10, vertical: 10),
     this.clearButtonPadding = const .directional(end: 4),
     this.obscureButtonPadding = const .directional(end: 4),
@@ -142,27 +135,34 @@ class FTextFieldStyle extends FLabelStyle with _$FTextFieldStyleFunctions {
 
     return .new(
       keyboardAppearance: colors.brightness,
+      color: FVariants(
+        colors.card,
+        variants: {
+          [.disabled]: colors.disable(colors.card),
+        },
+      ),
+      cursorColor: colors.primary,
       iconStyle: iconStyle,
       clearButtonStyle: bounceableButtonStyle,
       obscureButtonStyle: bounceableButtonStyle.copyWith(
         tappableStyle: const .delta(motion: .delta(bounceTween: FTappableMotion.noBounceTween)),
       ),
       contentTextStyle: .delta(
-        textStyle.copyWith(color: colors.primary),
+        textStyle.copyWith(color: colors.foreground),
         variants: {
-          [.disabled]: .delta(color: colors.disable(colors.primary)),
+          [.disabled]: .delta(color: colors.disable(colors.foreground)),
         },
       ),
       hintTextStyle: .delta(
         textStyle.copyWith(color: colors.mutedForeground),
         variants: {
-          [.disabled]: .delta(color: colors.disable(colors.border)),
+          [.disabled]: .delta(color: colors.disable(colors.mutedForeground)),
         },
       ),
       counterTextStyle: .delta(
-        textStyle.copyWith(color: colors.primary),
+        textStyle.copyWith(color: colors.foreground),
         variants: {
-          [.disabled]: .delta(color: colors.disable(colors.primary)),
+          [.disabled]: .delta(color: colors.disable(colors.foreground)),
         },
       ),
       border: FVariants(
@@ -171,20 +171,22 @@ class FTextFieldStyle extends FLabelStyle with _$FTextFieldStyleFunctions {
           borderRadius: style.borderRadius,
         ),
         variants: {
-          [.disabled.and(.error)]: OutlineInputBorder(
-            borderSide: BorderSide(color: colors.disable(colors.error), width: style.borderWidth),
+          [.focused]: OutlineInputBorder(
+            borderSide: BorderSide(color: colors.primary, width: style.borderWidth),
             borderRadius: style.borderRadius,
           ),
-          [.error]: OutlineInputBorder(
-            borderSide: BorderSide(color: colors.error, width: style.borderWidth),
-            borderRadius: style.borderRadius,
-          ),
+          //
           [.disabled]: OutlineInputBorder(
             borderSide: BorderSide(color: colors.disable(colors.border), width: style.borderWidth),
             borderRadius: style.borderRadius,
           ),
-          [.focused]: OutlineInputBorder(
-            borderSide: BorderSide(color: colors.primary, width: style.borderWidth),
+          //
+          [.error]: OutlineInputBorder(
+            borderSide: BorderSide(color: colors.error, width: style.borderWidth),
+            borderRadius: style.borderRadius,
+          ),
+          [.error.and(.disabled)]: OutlineInputBorder(
+            borderSide: BorderSide(color: colors.disable(colors.error), width: style.borderWidth),
             borderRadius: style.borderRadius,
           ),
         },

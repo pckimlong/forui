@@ -1,4 +1,4 @@
-import { getPageImage, source } from '@/lib/source';
+import { source } from '@/lib/source';
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page';
 import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/mdx-components';
@@ -16,10 +16,10 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const MDX = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage toc={page.data.toc} full={page.data.full} tableOfContent={{ style: 'clerk' }}>
       <div className="space-y-0.5">
         <DocsTitle className="">{page.data.title}</DocsTitle>
-        <DocsDescription className="mb-0">{page.data.description}</DocsDescription>
+        <DocsDescription className="text-base mb-0">{page.data.description}</DocsDescription>
         {page.data.apiReference && (
           <LinkBadgeGroup className="pt-2">
             <LinkBadge label="API Reference" href={page.data.apiReference} />
@@ -27,7 +27,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
         )}
         <Separator className="mt-2 mb-6" />
       </div>
-      <DocsBody>
+      <DocsBody className="text-base!">
         <MDX
           components={getMDXComponents({
             a: createRelativeLink(source, page), // this allows you to link to other pages with relative file paths.
@@ -50,8 +50,5 @@ export async function generateMetadata(props: PageProps<'/docs/[[...slug]]'>): P
   return {
     title: page.data.title,
     description: page.data.description,
-    openGraph: {
-      images: getPageImage(page).url,
-    },
   };
 }

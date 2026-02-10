@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_redundant_argument_values, sort_child_properties_last
+// ignore_for_file: avoid_redundant_argument_values
 
 import 'package:flutter/widgets.dart';
 
@@ -7,6 +7,21 @@ import 'package:forui/forui.dart';
 final tile = FTile(
   // {@category "Variants"}
   variants: const {},
+  // {@endcategory}
+  // {@category "Accessibility"}
+  autofocus: false,
+  focusNode: null,
+  onFocusChange: (focused) {},
+  semanticsLabel: 'Tile',
+  shortcuts: null,
+  actions: null,
+  // {@endcategory}
+  // {@category "Callbacks"}
+  onLongPress: () {},
+  onSecondaryPress: () {},
+  onSecondaryLongPress: () {},
+  onHoverChange: (hovered) {},
+  onVariantChange: (previous, current) {},
   // {@endcategory}
   // {@category "Core"}
   style: const .delta(margin: .zero),
@@ -19,6 +34,12 @@ final tile = FTile(
   prefix: const Icon(FIcons.house),
   suffix: const Icon(FIcons.chevronRight),
   // {@endcategory}
+);
+
+final tileRaw = FTile.raw(
+  // {@category "Variants"}
+  variants: const {},
+  // {@endcategory}
   // {@category "Accessibility"}
   autofocus: false,
   focusNode: null,
@@ -33,12 +54,6 @@ final tile = FTile(
   onSecondaryLongPress: () {},
   onHoverChange: (hovered) {},
   onVariantChange: (previous, current) {},
-  // {@endcategory}
-);
-
-final tileRaw = FTile.raw(
-  // {@category "Variants"}
-  variants: const {},
   // {@endcategory}
   // {@category "Core"}
   style: const .delta(margin: .zero),
@@ -47,21 +62,6 @@ final tileRaw = FTile.raw(
   onPress: () {},
   prefix: const Icon(FIcons.house),
   child: const Text('Custom Content'),
-  // {@endcategory}
-  // {@category "Accessibility"}
-  autofocus: false,
-  focusNode: null,
-  onFocusChange: (focused) {},
-  semanticsLabel: 'Tile',
-  shortcuts: null,
-  actions: null,
-  // {@endcategory}
-  // {@category "Callbacks"}
-  onLongPress: () {},
-  onSecondaryPress: () {},
-  onSecondaryLongPress: () {},
-  onHoverChange: (hovered) {},
-  onVariantChange: (previous, current) {},
   // {@endcategory}
 );
 

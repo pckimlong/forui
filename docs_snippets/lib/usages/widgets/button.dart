@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_redundant_argument_values, sort_child_properties_last
+// ignore_for_file: avoid_redundant_argument_values
 
 import 'package:flutter/widgets.dart';
 
@@ -10,12 +10,6 @@ final button = FButton(
   // {@endcategory}
   // {@category "Size"}
   size: null,
-  // {@endcategory}
-  // {@category "Core"}
-  style: const .inherit(),
-  selected: false,
-  onPress: () {},
-  child: const Text('Button'),
   // {@endcategory}
   // {@category "Content"}
   prefix: const Icon(FIcons.mail),
@@ -39,6 +33,12 @@ final button = FButton(
   onHoverChange: (hovered) {},
   onVariantChange: (previous, current) {},
   // {@endcategory}
+  // {@category "Core"}
+  style: const .inherit(),
+  selected: false,
+  onPress: () {},
+  child: const Text('Button'),
+  // {@endcategory}
 );
 
 final icon = FButton.icon(
@@ -47,12 +47,6 @@ final icon = FButton.icon(
   // {@endcategory}
   // {@category "Size"}
   size: null,
-  // {@endcategory}
-  // {@category "Core"}
-  style: const .inherit(),
-  selected: false,
-  onPress: () {},
-  child: const Icon(FIcons.mail),
   // {@endcategory}
   // {@category "Accessibility"}
   autofocus: false,
@@ -67,6 +61,12 @@ final icon = FButton.icon(
   onSecondaryLongPress: null,
   onHoverChange: (hovered) {},
   onVariantChange: (previous, current) {},
+  // {@endcategory}
+  // {@category "Core"}
+  style: const .inherit(),
+  selected: false,
+  onPress: () {},
+  child: const Icon(FIcons.mail),
   // {@endcategory}
 );
 
@@ -77,12 +77,6 @@ final raw = FButton.raw(
   // {@category "Size"}
   size: null,
   // {@endcategory}
-  // {@category "Core"}
-  style: const .inherit(),
-  selected: false,
-  onPress: () {},
-  child: const Text('Button'),
-  // {@endcategory}
   // {@category "Accessibility"}
   autofocus: false,
   focusNode: null,
@@ -96,6 +90,12 @@ final raw = FButton.raw(
   onSecondaryLongPress: null,
   onHoverChange: (hovered) {},
   onVariantChange: (previous, current) {},
+  // {@endcategory}
+  // {@category "Core"}
+  style: const .inherit(),
+  selected: false,
+  onPress: () {},
+  child: const Text('Button'),
   // {@endcategory}
 );
 
